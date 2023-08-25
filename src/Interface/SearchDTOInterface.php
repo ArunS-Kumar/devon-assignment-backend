@@ -2,7 +2,7 @@
 
 namespace App\Interface;
 
-interface SearchInterface
+interface SearchDTOInterface
 {
 
 }

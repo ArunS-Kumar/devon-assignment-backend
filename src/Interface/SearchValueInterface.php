@@ -4,6 +4,6 @@ namespace App\Interface;
 
 interface SearchValueInterface
 {
-    public function search(array $data, SearchInterface $search): bool;
+    public function search(array $data, SearchDTOInterface $search): bool;
 
 }

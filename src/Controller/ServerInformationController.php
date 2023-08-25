@@ -30,6 +30,7 @@ class ServerInformationController extends AbstractController
         $serverInformation = $this->serverInformationReader->readServerInformation($search);
         $filterInformation = $this->filterInformationReader->readFilterInformation();
 
+        // todo -> add collection to pass response
         return new JsonResponse(
             array_merge($serverInformation, $filterInformation)
         );

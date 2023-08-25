@@ -3,7 +3,7 @@
 namespace App\Service;
 
 use App\Filters\ServerInformationFilter;
-use App\Interface\SearchInterface;
+use App\Interface\SearchDTOInterface;
 use App\Service\Search\Search;
 use PhpOffice\PhpSpreadsheet\Reader\Exception;
 
@@ -15,8 +15,6 @@ class ServerInformationReader extends ExcelReader
 
     const END_COLUMN = "E";
 
-    const CHUNK_SIZE = 15;
-
     public function __construct()
     {
         $this->search = new Search();
@@ -25,18 +23,23 @@ class ServerInformationReader extends ExcelReader
     /**
      * @throws Exception
      */
-    public function readServerInformation(SearchInterface $search, int $startRow = self::START_ROW): array
+    public function readServerInformation(SearchDTOInterface $search, int $startRow = self::START_ROW): array
     {
         $searchResult = [];
-        $lastSearchedKey = '';
         while (1) {
-            $serverInformationData = $this->readServerDataFromXlsx($startRow, self::START_COLUMN, self::END_COLUMN);
+            $serverInformationData = $this->readServerDataFromXlsx(
+                $startRow,
+                self::START_COLUMN,
+                self::END_COLUMN,
+                $search->getLimit()
+            );
+            $lastSearchedKey = array_key_last($serverInformationData);
             if (!$serverInformationData) {
                 break;
             }
 
-            $lastSearchedKey = array_key_last($serverInformationData);
             foreach ($serverInformationData as $key => $data) {
+
                 if (!$this->search->run($data, $search)) {
                     unset($serverInformationData[$key]);
                     continue;
@@ -45,43 +48,34 @@ class ServerInformationReader extends ExcelReader
                 $searchResult[$key] = $serverInformationData[$key];
                 unset($serverInformationData[$key]);
 
-                if (count($searchResult) === self::CHUNK_SIZE) {
+                if (count($searchResult) === $search->getLimit()) {
                     $lastSearchedKey = $key;
                     break;
                 }
             }
 
-            if (count($searchResult) === self::CHUNK_SIZE) {
+            if (count($searchResult) === $search->getLimit()) {
                 break;
             }
             $startRow = $lastSearchedKey + 1;
         }
 
         return [
-            'serverInformation' => $searchResult,
-            'lastSearchedKey' => $lastSearchedKey
+            'serverInformation' => [
+                'items' => $searchResult,
+                'lastSearchedKey' => $lastSearchedKey,
+                'totalCount' => count($searchResult)
+            ],
         ];
     }
 
-    private function readServerDataFromXlsx(int $startRow, string $startColumn, string $endColumn)
+    private function readServerDataFromXlsx(int $startRow, string $startColumn, string $endColumn, int $limit)
     {
         return $this->read(
-            new ServerInformationFilter($startRow, $startRow + self::CHUNK_SIZE),
+            new ServerInformationFilter($startRow, $startRow + $limit),
             $startColumn,
             $endColumn,
             $startRow
         );
     }
-
-    private function checkRamFilter(string $ramData, string $ramFilter): bool
-    {
-        foreach (explode(",",$ramFilter)  as $data) {
-            if (str_contains($ramData, $data)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-
 }

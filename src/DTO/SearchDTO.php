@@ -2,9 +2,9 @@
 
 namespace App\DTO;
 
-use App\Interface\SearchInterface;
+use App\Interface\SearchDTOInterface;
 
-class SearchDTO implements SearchInterface
+class SearchDTO implements SearchDTOInterface
 {
     private ?string $storage;
 
@@ -13,6 +13,24 @@ class SearchDTO implements SearchInterface
     private ?string $location;
 
     private ?string $ram;
+
+    private int $limit;
+
+    /**
+     * @return int
+     */
+    public function getLimit(): int
+    {
+        return $this->limit;
+    }
+
+    /**
+     * @param int $limit
+     */
+    public function setLimit(int $limit): void
+    {
+        $this->limit = $limit;
+    }
 
     /**
      * @return string|null

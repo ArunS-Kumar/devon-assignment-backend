@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\DTO\SearchDTO;
 use App\Service\FilterInformationReader;
 use App\Service\ServerInformationReader;
 use PhpOffice\PhpSpreadsheet\Reader\Exception;
@@ -9,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class ServerInformationController extends AbstractController
 {
@@ -21,16 +23,11 @@ class ServerInformationController extends AbstractController
     /**
      * @throws Exception
      */
-    #[Route('/server-information', name: 'server-information', methods: 'GET')]
-    public function serverInformation(Request $request): JsonResponse
+    #[Route('/server-information', name: 'server-information', methods: 'POST')]
+    public function serverInformation(Request $request, SerializerInterface $serializer): JsonResponse
     {
-        $filter = [
-            'storage' => $request->get('storage'),
-            'harddisk_type' => $request->get('harddisk_type'),
-            'location' => $request->get('location'),
-            'ram' => $request->get('ram')
-        ];
-        $serverInformation = $this->serverInformationReader->readServerInformation($filter);
+        $search = $serializer->deserialize($request->getContent(), SearchDTO::class, 'json');
+        $serverInformation = $this->serverInformationReader->readServerInformation($search);
         $filterInformation = $this->filterInformationReader->readFilterInformation();
 
         return new JsonResponse(

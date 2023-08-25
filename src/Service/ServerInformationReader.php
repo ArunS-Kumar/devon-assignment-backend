@@ -3,6 +3,8 @@
 namespace App\Service;
 
 use App\Filters\ServerInformationFilter;
+use App\Interface\SearchInterface;
+use App\Service\Search\Search;
 use PhpOffice\PhpSpreadsheet\Reader\Exception;
 
 class ServerInformationReader extends ExcelReader
@@ -15,10 +17,15 @@ class ServerInformationReader extends ExcelReader
 
     const CHUNK_SIZE = 15;
 
+    public function __construct()
+    {
+        $this->search = new Search();
+    }
+
     /**
      * @throws Exception
      */
-    public function readServerInformation(array $filter, int $startRow = self::START_ROW): array
+    public function readServerInformation(SearchInterface $search, int $startRow = self::START_ROW): array
     {
         $searchResult = [];
         $lastSearchedKey = '';
@@ -30,12 +37,7 @@ class ServerInformationReader extends ExcelReader
 
             $lastSearchedKey = array_key_last($serverInformationData);
             foreach ($serverInformationData as $key => $data) {
-
-                if (!str_contains($data['C'], $filter['storage']) ||
-                    !str_contains($data['C'], $filter['harddisk_type']) ||
-                    !str_contains($data['D'], $filter['location']) ||
-                    !$this->checkRamFilter($data['B'], $filter['ram'])
-                ) {
+                if (!$this->search->run($data, $search)) {
                     unset($serverInformationData[$key]);
                     continue;
                 }

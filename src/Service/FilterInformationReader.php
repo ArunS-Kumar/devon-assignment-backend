@@ -35,7 +35,6 @@ class FilterInformationReader extends ExcelReader
 
     private function readFilterDataFromXlsx()
     {
-        // todo convert const value into array and pass
         return $this->read(
             new FilterInformationFilter(self::START_ROW, self::END_ROW),
             self::START_COLUMN,

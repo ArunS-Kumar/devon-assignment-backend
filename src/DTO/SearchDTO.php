@@ -16,6 +16,8 @@ class SearchDTO implements SearchDTOInterface
 
     private int $limit;
 
+    private ?int $startRow = 0;
+
     /**
      * @return int
      */
@@ -96,4 +98,19 @@ class SearchDTO implements SearchDTOInterface
         $this->location = $location;
     }
 
+    /**
+     * @return int|null
+     */
+    public function getStartRow(): ?int
+    {
+        return $this->startRow;
+    }
+
+    /**
+     * @param int|null $startRow
+     */
+    public function setStartRow(?int $startRow): void
+    {
+        $this->startRow = $startRow;
+    }
 }

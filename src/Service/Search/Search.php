@@ -15,12 +15,12 @@ class Search
     {
     }
 
-    public function run(array $data, SearchDTOInterface $searchValues): bool
+    public function run(array $data, SearchDTOInterface $searchValue): bool
     {
-        $checkLocation = $this->location->search($data, $searchValues);
-        $checkHardDiskType = $this->hardDisk->search($data, $searchValues);
-        $checkRam = $this->ram->search($data, $searchValues);
-        $checkStorage = $this->storage->search($data, $searchValues);
+        $checkLocation = $this->location->search($data, $searchValue);
+        $checkHardDiskType = $this->hardDisk->search($data, $searchValue);
+        $checkRam = $this->ram->search($data, $searchValue);
+        $checkStorage = $this->storage->search($data, $searchValue);
 
         if ($checkLocation && $checkHardDiskType && $checkRam && $checkStorage) {
             return true;

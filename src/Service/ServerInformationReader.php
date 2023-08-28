@@ -24,7 +24,11 @@ class ServerInformationReader extends ExcelReader
      */
     public function readServerInformation(SearchDTOInterface $search, int $startRow = self::START_ROW): array
     {
+        if ($search->getStartRow() && $search->getStartRow() != 0) {
+            $startRow = $search->getStartRow();
+        }
         $searchResult = [];
+        $lastSearchedKey = 0;
         while (1) {
             $serverInformationData = $this->readServerDataFromXlsx(
                 $startRow,
@@ -32,10 +36,10 @@ class ServerInformationReader extends ExcelReader
                 self::END_COLUMN,
                 $search->getLimit()
             );
-            $lastSearchedKey = array_key_last($serverInformationData);
             if (!$serverInformationData) {
                 break;
             }
+            $lastSearchedKey = array_key_last($serverInformationData);
 
             foreach ($serverInformationData as $key => $data) {
                 if (!$this->search->run($data, $search)) {
@@ -60,8 +64,8 @@ class ServerInformationReader extends ExcelReader
 
         return [
             'serverInformation' => [
-                'items' => $searchResult,
-                'lastSearchedKey' => $lastSearchedKey,
+                'items' => array_values($searchResult),
+                'lastRow' => $lastSearchedKey,
                 'totalCount' => count($searchResult)
             ],
         ];

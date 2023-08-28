@@ -7,7 +7,7 @@ use App\Interface\SearchValueInterface;
 
 class LocationSearch implements SearchValueInterface
 {
-    const KEY = 'D';
+    const KEY = '3';
     public function search(array $data, SearchDTOInterface $search): bool
     {
         return str_contains($data[self::KEY], $search->getLocation());

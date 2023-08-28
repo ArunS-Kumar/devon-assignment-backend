@@ -42,6 +42,7 @@ class ServerInformationReader extends ExcelReader
             $lastSearchedKey = array_key_last($serverInformationData);
 
             foreach ($serverInformationData as $key => $data) {
+                $data = array_values($data);
                 if (!$this->search->run($data, $search)) {
                     unset($serverInformationData[$key]);
                     continue;

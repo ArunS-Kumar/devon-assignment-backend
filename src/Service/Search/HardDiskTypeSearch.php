@@ -7,7 +7,7 @@ use App\Interface\SearchValueInterface;
 
 class HardDiskTypeSearch implements SearchValueInterface
 {
-    const KEY = 'C';
+    const KEY = '2';
     public function search(array $data, SearchDTOInterface $search): bool
     {
         return str_contains($data[self::KEY], $search->getHardDiskType());

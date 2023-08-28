@@ -7,7 +7,7 @@ use App\Interface\SearchValueInterface;
 
 class RamSearch implements SearchValueInterface
 {
-    const KEY = 'B';
+    const KEY = '1';
     public function search(array $data, SearchDTOInterface $search): bool
     {
         foreach (explode(",", $search->getRam())  as $ram) {

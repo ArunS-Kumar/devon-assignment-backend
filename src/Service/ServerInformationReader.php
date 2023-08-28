@@ -15,9 +15,8 @@ class ServerInformationReader extends ExcelReader
 
     const END_COLUMN = "E";
 
-    public function __construct()
+    public function __construct(private readonly Search $search)
     {
-        $this->search = new Search();
     }
 
     /**
@@ -39,13 +38,12 @@ class ServerInformationReader extends ExcelReader
             }
 
             foreach ($serverInformationData as $key => $data) {
-
                 if (!$this->search->run($data, $search)) {
                     unset($serverInformationData[$key]);
                     continue;
                 }
 
-                $searchResult[$key] = $serverInformationData[$key];
+                $searchResult[$key] = $data;
                 unset($serverInformationData[$key]);
 
                 if (count($searchResult) === $search->getLimit()) {

@@ -6,17 +6,21 @@ use App\Interface\SearchDTOInterface;
 
 class Search
 {
+    public function __construct(
+        private readonly LocationSearch     $location,
+        private readonly HardDiskTypeSearch $hardDisk,
+        private readonly RamSearch          $ram,
+        private readonly StorageSearch      $storage,
+    )
+    {
+    }
+
     public function run(array $data, SearchDTOInterface $searchValues): bool
     {
-        $locationSearch = new LocationSearch();
-        $hardDiskTypeSearch = new HardDiskTypeSearch();
-        $ramSearch = new RamSearch();
-        $storageSearch = new StorageSearch();
-
-        $checkLocation = $locationSearch->search($data, $searchValues);
-        $checkHardDiskType = $hardDiskTypeSearch->search($data, $searchValues);
-        $checkRam = $ramSearch->search($data, $searchValues);
-        $checkStorage = $storageSearch->search($data, $searchValues);
+        $checkLocation = $this->location->search($data, $searchValues);
+        $checkHardDiskType = $this->hardDisk->search($data, $searchValues);
+        $checkRam = $this->ram->search($data, $searchValues);
+        $checkStorage = $this->storage->search($data, $searchValues);
 
         if ($checkLocation && $checkHardDiskType && $checkRam && $checkStorage) {
             return true;

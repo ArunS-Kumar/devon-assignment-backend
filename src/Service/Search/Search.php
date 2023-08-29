@@ -11,8 +11,7 @@ class Search
         private readonly HardDiskTypeSearch $hardDisk,
         private readonly RamSearch          $ram,
         private readonly StorageSearch      $storage,
-    )
-    {
+    ) {
     }
 
     public function run(array $data, SearchDTOInterface $searchValue): bool

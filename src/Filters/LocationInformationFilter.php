@@ -12,7 +12,8 @@ class LocationInformationFilter implements IReadFilter
         $this->columns  = $columns;
     }
 
-    public function readCell($columnAddress, $row, $worksheetName = '') {
+    public function readCell($columnAddress, $row, $worksheetName = ''): bool
+    {
         if (in_array($columnAddress, $this->columns)) {
             return true;
         }

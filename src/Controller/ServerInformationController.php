@@ -33,7 +33,6 @@ class ServerInformationController extends AbstractController
         $search = $serializer->deserialize($request->getContent(), SearchDTO::class, 'json');
         $serverInformation = $serverInformationReader->readServerInformation($search);
 
-        // todo -> change cache into raise
         $filterInformation = $cache->get('find-filter-information', function(ItemInterface $item) use ($filterInformationReader) {
             $item->expiresAfter(18000);
             return $filterInformationReader->readFilterInformation();

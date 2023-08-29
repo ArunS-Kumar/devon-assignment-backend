@@ -4,7 +4,7 @@ namespace App\Service\Search;
 
 use App\Interface\SearchDTOInterface;
 
-class Search
+class Search implements SearchDTOInterface
 {
     public function __construct(
         private readonly LocationSearch     $location,

@@ -21,7 +21,7 @@ class StorageSearch implements SearchValueInterface
         return false;
     }
 
-    private function convertRamIntoGb(string $ram): int {
+    public function convertRamIntoGb(string $ram): int {
         if (str_contains($ram, 'TB')) {
             $searchRam = $this->calculateTBintoGB( (int) explode('TB', $ram)[0]);
         } else {

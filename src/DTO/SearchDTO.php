@@ -6,17 +6,15 @@ use App\Interface\SearchDTOInterface;
 
 class SearchDTO implements SearchDTOInterface
 {
-    private ?string $storage;
-
-    private ?string $hardDiskType;
-
-    private ?string $location;
-
-    private ?string $ram;
-
-    private int $limit;
-
-    private ?int $startRow = 0;
+    public function __construct(
+        private ?string $storage,
+        private ?string $hardDiskType,
+        private ?string $location,
+        private ?string $ram,
+        private int $limit,
+        private ?int $startRow = 0
+    ) {
+    }
 
     /**
      * @return int

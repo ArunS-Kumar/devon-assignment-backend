@@ -10,6 +10,6 @@ class LocationSearch implements SearchValueInterface
     const KEY = '3';
     public function search(array $data, SearchDTOInterface $search): bool
     {
-        return str_contains($data[self::KEY], $search->getLocation());
+        return str_contains(trim($data[self::KEY]), trim($search->getLocation()));
     }
 }

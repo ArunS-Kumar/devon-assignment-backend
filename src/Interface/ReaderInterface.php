@@ -10,5 +10,8 @@ interface ReaderInterface
 
     const FILE_TYPE = 'Xlsx';
 
-    public function read(IReadFilter $readFilter, string $startColumn, string $endColumn, int $startRow, int $endRow = null);
+    /**
+     * @return array<int, string>
+     */
+    public function read(IReadFilter $readFilter, string $startColumn, string $endColumn, int $startRow, int $endRow = null): array;
 }

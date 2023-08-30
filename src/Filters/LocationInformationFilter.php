@@ -6,10 +6,10 @@ use PhpOffice\PhpSpreadsheet\Reader\IReadFilter;
 
 class LocationInformationFilter implements IReadFilter
 {
-    private $columns  = [];
-
-    public function __construct($columns) {
-        $this->columns  = $columns;
+    /**
+     * @param array<int, string> $columns
+     */
+    public function __construct(private readonly array $columns = []) {
     }
 
     public function readCell($columnAddress, $row, $worksheetName = ''): bool

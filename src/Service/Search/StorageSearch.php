@@ -10,11 +10,14 @@ class StorageSearch implements SearchValueInterface
     const KEY = '2';
     public function search(array $data, SearchDTOInterface $search): bool
     {
-        $searchRam = $this->convertRamIntoGb($search->getStorage());
+        /** @phpstan-ignore-next-line */
+        $storage = $search->getStorage();
+
+        $searchRam = $this->convertRamIntoGb($storage);
         $dataRamArray = explode('x', $data[self::KEY]);
         $dataRam = (int) $dataRamArray[0] * $this->convertRamIntoGB($dataRamArray[1]);
 
-        if ($dataRam <= $searchRam || !$search->getStorage()) {
+        if ($dataRam <= $searchRam || !$storage) {
             return true;
         }
 

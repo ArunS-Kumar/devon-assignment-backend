@@ -10,6 +10,7 @@ use PhpOffice\PhpSpreadsheet\Reader\IReadFilter;
 class ExcelReader implements ReaderInterface
 {
     /**
+     * @return array
      * @throws Exception
      */
     public function read(IReadFilter $readFilter, string $startColumn, string $endColumn, int $startRow, int $endRow = null): array

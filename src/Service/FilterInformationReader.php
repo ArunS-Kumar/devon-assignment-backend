@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Filters\FilterInformationFilter;
+use PhpOffice\PhpSpreadsheet\Reader\Exception;
 
 class FilterInformationReader extends ExcelReader
 {
@@ -14,6 +15,10 @@ class FilterInformationReader extends ExcelReader
 
     const END_COLUMN = "I";
 
+    /**
+     * @return array
+     * @throws Exception
+     */
     public function readFilterInformation(): array
     {
         $filterInformation = $this->readFilterDataFromXlsx();
@@ -33,7 +38,11 @@ class FilterInformationReader extends ExcelReader
         ];
     }
 
-    private function readFilterDataFromXlsx()
+    /**
+     * @return array
+     * @throws Exception
+     */
+    private function readFilterDataFromXlsx(): array
     {
         return $this->read(
             new FilterInformationFilter(self::START_ROW, self::END_ROW),
@@ -44,7 +53,12 @@ class FilterInformationReader extends ExcelReader
         );
     }
 
-    function snakeCase($input) {
+    /**
+     * @param string $input
+     * @return string
+     */
+    function snakeCase(string $input): string {
+        /** @phpstan-ignore-next-line */
         return strtolower(preg_replace('/[^A-Za-z0-9]/', '_', preg_replace('/(?<!^)[A-Z]/', '_$0', $input)));
     }
 }

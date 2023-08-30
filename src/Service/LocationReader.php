@@ -2,7 +2,6 @@
 
 namespace App\Service;
 
-use App\Filters\FilterInformationFilter;
 use App\Filters\LocationInformationFilter;
 
 class LocationReader extends ExcelReader
@@ -12,6 +11,9 @@ class LocationReader extends ExcelReader
     const NAME = 'location';
     const TYPE = 'dropdown';
 
+    /**
+     * @return array
+     */
     public function readLocation(): array
     {
         $locationInformation = $this->read(

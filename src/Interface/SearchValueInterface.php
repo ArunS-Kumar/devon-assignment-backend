@@ -5,7 +5,7 @@ namespace App\Interface;
 interface SearchValueInterface
 {
     /**
-     * @param array $data
+     * @param array<int, string> $data
      * @param SearchDTOInterface $search
      * @return bool
      */

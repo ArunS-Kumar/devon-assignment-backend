@@ -21,11 +21,15 @@ class ServerInformationReader extends ExcelReader
     }
 
     /**
+     * @return array
      * @throws Exception
      */
     public function readServerInformation(SearchDTOInterface $search, int $startRow = self::START_ROW): array
     {
         try {
+            /** @phpstan-ignore-next-line */
+            $limit = $search->getLimit();
+
             if ($search->getStartRow() && $search->getStartRow() != 0) {
                 $startRow = $search->getStartRow();
             }
@@ -37,7 +41,7 @@ class ServerInformationReader extends ExcelReader
                     $startRow,
                     self::START_COLUMN,
                     self::END_COLUMN,
-                    $search->getLimit()
+                    $limit
                 );
                 if (!$serverInformationData) {
                     break;
@@ -58,13 +62,13 @@ class ServerInformationReader extends ExcelReader
                     $searchResult[$key] = $data;
                     unset($serverInformationData[$key]);
 
-                    if (count($searchResult) === $search->getLimit()) {
+                    if (count($searchResult) === $limit) {
                         $lastSearchedKey = $key;
                         break;
                     }
                 }
 
-                if (count($searchResult) === $search->getLimit()) {
+                if (count($searchResult) === $limit) {
                     break;
                 }
                 $startRow = $lastSearchedKey + 1;
@@ -83,7 +87,11 @@ class ServerInformationReader extends ExcelReader
         }
     }
 
-    protected function readServerDataFromXlsx(int $startRow, string $startColumn, string $endColumn, int $limit)
+    /**
+     * @return array
+     * @throws Exception
+     */
+    protected function readServerDataFromXlsx(int $startRow, string $startColumn, string $endColumn, int $limit): array
     {
         return $this->read(
             new ServerInformationFilter($startRow, $startRow + $limit),
